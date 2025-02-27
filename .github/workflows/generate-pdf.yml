@@ -1,0 +1,26 @@
+name: Generate PDF from README
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  convert-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Pandoc
+        run: sudo apt-get install -y pandoc texlive-xetex
+
+      - name: Convert README.md to PDF
+        run: pandoc README.md -o README.pdf --pdf-engine=xelatex -V geometry:margin=1in
+
+      - name: Upload PDF as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: readme-pdf
+          path: README.pdf
