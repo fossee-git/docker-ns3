@@ -27,11 +27,13 @@ jobs:
 
       - name: Commit and Push README.pdf
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.pdf
-          git commit -m "Update README.pdf [skip ci]" || echo "No changes to commit"
-          git push
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/fossee-git/docker-ns3.git
+            git add -f README.pdf  # Force add the file
+            git commit -m "Update README.pdf [skip ci]" || echo "No changes to commit"
+            git push
+        
 
       -  name: Create or Update GitHub Release
          uses: softprops/action-gh-release@v2
